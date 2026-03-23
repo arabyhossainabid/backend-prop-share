@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { envVars } from '../config/env';
 
-const connectionString = process.env.DATABASE_URL!;
+const connectionString = envVars.DATABASE_URL;
 
-// PrismaPg accepts { connectionString } directly — no separate pg Pool needed
 const adapter = new PrismaPg({ connectionString });
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
@@ -12,7 +12,7 @@ export const prisma =
     globalForPrisma.prisma ||
     new PrismaClient({
         adapter,
-        log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+        log: envVars.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

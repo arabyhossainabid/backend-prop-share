@@ -16,4 +16,4 @@ router.post('/', checkAuth(Role.ADMIN), validateRequest(CategoryValidation.creat
 router.patch('/:id', checkAuth(Role.ADMIN), validateRequest(CategoryValidation.update), CategoryController.updateCategory);
 router.delete('/:id', checkAuth(Role.ADMIN), CategoryController.deleteCategory);
 
-export const CategoryRoutes = router;
+export const CategoryRoutes: Router = router;

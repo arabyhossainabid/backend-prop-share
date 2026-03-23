@@ -59,4 +59,4 @@ router.patch(
     PropertyController.toggleFeatured
 );
 
-export const PropertyRoutes = router;
+export const PropertyRoutes: Router = router;

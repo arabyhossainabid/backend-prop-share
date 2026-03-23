@@ -25,4 +25,4 @@ router.get(
     VoteController.getUserVote
 );
 
-export const VoteRoutes = router;
+export const VoteRoutes: Router = router;

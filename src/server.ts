@@ -1,14 +1,21 @@
 import app from './app';
 import { envVars } from './app/config/env';
+import { prisma } from './app/lib/prisma';
 import { seedSuperAdmin } from './app/utils/seed';
 
 const bootstrap = async () => {
     try {
-        // Seed initial admin user
+        // 1. Check DB Connection
+        await prisma.$connect();
+        console.log('Database connected successfully');
+
+        // 2. Seed initial admin user
         await seedSuperAdmin();
 
-        const server = app.listen(envVars.PORT, () => {
-            console.log(`PropShare API listening on http://localhost:${envVars.PORT}`);
+        // 3. Start Server
+        const port = envVars.PORT || 8080;
+        const server = app.listen(port, () => {
+            console.log(`PropShare API listening on http://localhost:${port}`);
         });
 
         // Unhandled Rejection handle

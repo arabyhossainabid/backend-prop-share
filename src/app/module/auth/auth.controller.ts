@@ -39,10 +39,17 @@ const logoutUser = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Logged out successfully' });
 });
 
+const deleteAccount = catchAsync(async (req: Request, res: Response) => {
+    const result = await AuthService.deleteAccount(req.verifiedUser!.userId);
+    res.clearCookie('accessToken');
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Account deleted successfully', data: result });
+});
+
 export const AuthController = {
     registerUser,
     loginUser,
     getMe,
     updateProfile,
     logoutUser,
+    deleteAccount,
 };

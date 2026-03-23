@@ -23,6 +23,12 @@ router.patch(
     AdminController.updateUserRole
 );
 
+router.delete(
+    '/users/:userId',
+    checkAuth(Role.ADMIN),
+    AdminController.deleteUser
+);
+
 router.get(
     '/stats',
     checkAuth(Role.ADMIN),
@@ -41,4 +47,28 @@ router.get(
     AdminController.getAllInvestmentsAdmin
 );
 
-export const AdminRoutes = router;
+router.post(
+    '/categories',
+    checkAuth(Role.ADMIN),
+    AdminController.createCategory
+);
+
+router.patch(
+    '/categories/:categoryId',
+    checkAuth(Role.ADMIN),
+    AdminController.updateCategory
+);
+
+router.delete(
+    '/categories/:categoryId',
+    checkAuth(Role.ADMIN),
+    AdminController.deleteCategory
+);
+
+router.patch(
+    '/properties/:propertyId/featured',
+    checkAuth(Role.ADMIN),
+    AdminController.updatePropertyFeatured
+);
+
+export const AdminRoutes: Router = router;

@@ -27,10 +27,10 @@ router.get(
     AuthController.getMe
 );
 
-router.patch(
-    '/profile',
+router.delete(
+    '/delete-account',
     checkAuth(Role.USER, Role.ADMIN),
-    AuthController.updateProfile
+    AuthController.deleteAccount
 );
 
-export const AuthRoutes = router;
+export const AuthRoutes: Router = router;

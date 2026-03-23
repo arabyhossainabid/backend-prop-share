@@ -34,11 +34,41 @@ const getAllInvestmentsAdmin = catchAsync(async (req: Request, res: Response) =>
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Investments fetched', data: result });
 });
 
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.deleteUser(req.params.userId as string);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'User deleted successfully', data: result });
+});
+
+const createCategory = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.createCategory(req.body);
+    sendResponse(res, { httpStatusCode: status.CREATED, success: true, message: 'Category created', data: result });
+});
+
+const updateCategory = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.updateCategory(req.params.categoryId as string, req.body);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Category updated', data: result });
+});
+
+const deleteCategory = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.deleteCategory(req.params.categoryId as string);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Category deleted', data: result });
+});
+
+const updatePropertyFeatured = catchAsync(async (req: Request, res: Response) => {
+    const result = await AdminService.updatePropertyFeatured(req.params.propertyId as string, req.body.isFeatured);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: 'Property featured status updated', data: result });
+});
+
 export const AdminController = {
     getAllUsers,
     updateUserStatus,
     updateUserRole,
+    deleteUser,
     getDashboardStats,
     getAllPropertiesAdmin,
     getAllInvestmentsAdmin,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+    updatePropertyFeatured,
 };

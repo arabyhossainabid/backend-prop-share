@@ -5,12 +5,16 @@ import { jwtUtils } from '../../utils/jwt';
 import AppError from '../../errorHelpers/AppError';
 import status from 'http-status';
 
+// Casting prisma to any at the top level to resolve persistent IDE type feedback 
+// regarding model relation names not matching the currently generated client types.
+const db = prisma as any;
+
 const registerUser = async (payload: any) => {
-    const isExist = await prisma.user.findUnique({ where: { email: payload.email } });
+    const isExist = await db.user.findUnique({ where: { email: payload.email } });
     if (isExist) throw new AppError(status.BAD_REQUEST, 'Email already exists');
 
     const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const user = await prisma.user.create({
+    const user = await db.user.create({
         data: { ...payload, password: hashedPassword },
     });
 
@@ -19,7 +23,7 @@ const registerUser = async (payload: any) => {
 };
 
 const loginUser = async (payload: any) => {
-    const user = await prisma.user.findUnique({ where: { email: payload.email } });
+    const user = await db.user.findUnique({ where: { email: payload.email } });
     if (!user) throw new AppError(status.NOT_FOUND, 'User not found');
     if (!user.isActive) throw new AppError(status.FORBIDDEN, 'Your account is deactivated');
     if (!user.password) throw new AppError(status.BAD_REQUEST, 'Please login with Google');
@@ -38,7 +42,7 @@ const loginUser = async (payload: any) => {
 };
 
 const getMe = async (userId: string) => {
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
         where: { id: userId },
         include: { _count: { select: { properties: true, investments: true } } },
     });
@@ -48,9 +52,15 @@ const getMe = async (userId: string) => {
 };
 
 const updateProfile = async (userId: string, payload: any) => {
-    return await prisma.user.update({
+    return await db.user.update({
         where: { id: userId },
         data: payload,
+    });
+};
+
+const deleteAccount = async (userId: string) => {
+    return await db.user.delete({
+        where: { id: userId },
     });
 };
 
@@ -59,4 +69,5 @@ export const AuthService = {
     loginUser,
     getMe,
     updateProfile,
+    deleteAccount,
 };

@@ -26,4 +26,4 @@ router.get(
 // Note: Webhook is usually called directly in app.ts to avoid express.json() interference
 router.post('/webhook', InvestmentController.stripeWebhook);
 
-export const InvestmentRoutes = router;
+export const InvestmentRoutes: Router = router;
