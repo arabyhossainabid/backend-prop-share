@@ -35,7 +35,7 @@ const updatePropertySchema = z.object({
 
 const reviewPropertySchema = z.object({
     body: z.object({
-        status: z.enum([PropertyStatus.APPROVED, PropertyStatus.REJECTED, PropertyStatus.UNDER_REVIEW]),
+        status: z.enum(['APPROVED', 'REJECTED', 'UNDER_REVIEW', 'PENDING', 'DRAFT']),
         feedbackNote: z.string().optional(),
     }),
 });
