@@ -24,21 +24,6 @@ const vote = async (userId: string, propertyId: string, voteType: VoteType) => {
   return { message: 'Vote recorded', data: result };
 };
 
-const removeVote = async (userId: string, propertyId: string) => {
-  const existingVote = await db.vote.findUnique({
-    where: { userId_propertyId: { userId, propertyId } },
-  });
-
-  if (!existingVote) {
-    throw new AppError(status.NOT_FOUND, 'No vote found to remove');
-  }
-
-  await db.vote.delete({
-    where: { userId_propertyId: { userId, propertyId } },
-  });
-  return { message: 'Vote removed' };
-};
-
 const getPropertyVotes = async (propertyId: string) => {
   const votes = await db.vote.findMany({ where: { propertyId } });
   const upvotes = votes.filter(
@@ -58,7 +43,6 @@ const getUserVoteOnProperty = async (userId: string, propertyId: string) => {
 
 export const VoteService = {
   vote,
-  removeVote,
   getPropertyVotes,
   getUserVoteOnProperty,
 };
