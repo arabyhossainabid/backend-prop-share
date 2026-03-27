@@ -54,6 +54,13 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+app.get('/api/health', (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'PropShare API is perfectly healthy',
+  });
+});
+
 // Error Handling
 app.use(notFound);
 app.use(globalErrorHandler);
