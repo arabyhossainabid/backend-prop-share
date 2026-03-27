@@ -31,7 +31,7 @@ export const globalErrorHandler = async (
     message = simplifiedError.message;
     errorSources = [...simplifiedError.errorSources];
     stack = err.stack;
-  // Multer errors are mapped to clear client-facing upload messages.
+    // Multer errors are mapped to clear client-facing upload messages.
   } else if (err instanceof multer.MulterError) {
     statusCode = status.BAD_REQUEST as number;
     stack = err.stack;
@@ -45,13 +45,13 @@ export const globalErrorHandler = async (
     }
 
     errorSources = [{ path: err.field || 'file', message }];
-  // Custom AppError represents expected business/domain failures.
+    // Custom AppError represents expected business/domain failures.
   } else if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
     stack = err.stack;
     errorSources = [{ path: '', message: err.message }];
-  // Fallback for unhandled runtime errors.
+    // Fallback for unhandled runtime errors.
   } else if (err instanceof Error) {
     statusCode = status.INTERNAL_SERVER_ERROR as number;
     message = err.message;
