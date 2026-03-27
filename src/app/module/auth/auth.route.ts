@@ -1,11 +1,18 @@
 import { Role } from '@prisma/client';
 import { Router } from 'express';
+import { betterAuthHandler } from './betterAuth.handler';
 import { checkAuth } from '../../middleware/checkAuth';
 import validateRequest from '../../middleware/validateRequest';
 import { AuthController } from './auth.controller';
 import { AuthValidation } from './auth.validation';
 
 const router = Router();
+
+// BetterAuth routes (handles all OAuth, email verification, etc.)
+router.use(betterAuthHandler);
+
+// Legacy/backward-compatible routes that may be deprecated
+// These are maintained for existing frontend integrations
 
 router.post(
   '/register',
