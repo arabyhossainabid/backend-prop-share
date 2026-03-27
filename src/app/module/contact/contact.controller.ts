@@ -1,45 +1,73 @@
 import { Request, Response } from 'express';
+import status from 'http-status';
 import { catchAsync } from '../../shared/catchAsync';
 import { sendResponse } from '../../shared/sendResponse';
-import status from 'http-status';
 import { ContactService } from './contact.service';
 
 const submitMessage = catchAsync(async (req: Request, res: Response) => {
-    const result = await ContactService.createMessage(req.body);
+  const result = await ContactService.createMessage(req.body, req.verifiedUser);
 
-    sendResponse(res, {
-        httpStatusCode: status.CREATED,
-        success: true,
-        message: 'Your message has been sent successfully',
-        data: result,
-    });
+  sendResponse(res, {
+    httpStatusCode: status.CREATED,
+    success: true,
+    message: 'Your message has been sent successfully',
+    data: result,
+  });
 });
 
 const getAllMessages = catchAsync(async (req: Request, res: Response) => {
-    const result = await ContactService.getAllMessages();
+  const result = await ContactService.getAllMessages(req.query);
 
-    sendResponse(res, {
-        httpStatusCode: status.OK,
-        success: true,
-        message: 'Contact messages retrieved successfully',
-        data: result,
-    });
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: 'Contact inbox fetched successfully',
+    data: result,
+  });
 });
 
 const deleteMessage = catchAsync(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    await ContactService.deleteMessage(id as string);
+  const result = await ContactService.deleteMessage(req.params.id as string);
 
-    sendResponse(res, {
-        httpStatusCode: status.OK,
-        success: true,
-        message: 'Message deleted successfully',
-        data: null,
-    });
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: 'Contact thread deleted successfully',
+    data: result,
+  });
+});
+
+const getMyMessages = catchAsync(async (req: Request, res: Response) => {
+  const user = req.verifiedUser!;
+  const result = await ContactService.getMyMessages(user.userId);
+
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: 'My contact threads fetched successfully',
+    data: result,
+  });
+});
+
+const getReplies = catchAsync(async (req: Request, res: Response) => {
+  const user = req.verifiedUser!;
+  const result = await ContactService.getReplies(
+    req.params.contactId as string,
+    user
+  );
+
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: 'Replies fetched successfully',
+    data: result,
+  });
 });
 
 export const ContactController = {
-    submitMessage,
-    getAllMessages,
-    deleteMessage,
+  submitMessage,
+  getAllMessages,
+  deleteMessage,
+  getMyMessages,
+  getReplies,
 };
