@@ -10,13 +10,6 @@ const router = Router();
 router.get('/users', checkAuth(Role.ADMIN), AdminController.getAllUsers);
 
 router.patch(
-  '/users/:userId/status',
-  checkAuth(Role.ADMIN),
-  validateRequest(AdminValidation.updateUserStatusSchema),
-  AdminController.updateUserStatus
-);
-
-router.patch(
   '/users/:userId/role',
   checkAuth(Role.ADMIN),
   validateRequest(AdminValidation.updateUserRoleSchema),

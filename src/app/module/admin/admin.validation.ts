@@ -1,11 +1,5 @@
 import { z } from 'zod';
 
-const updateUserStatusSchema = z.object({
-  body: z.object({
-    isActive: z.boolean({ required_error: 'isActive is required' }),
-  }),
-});
-
 const updateUserRoleSchema = z.object({
   body: z.object({
     role: z.enum(['ADMIN', 'USER']),
@@ -40,7 +34,6 @@ const updatePropertyFeaturedSchema = z.object({
 });
 
 export const AdminValidation = {
-  updateUserStatusSchema,
   updateUserRoleSchema,
   createCategorySchema,
   updateCategorySchema,
