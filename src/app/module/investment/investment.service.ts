@@ -28,6 +28,15 @@ const createCheckoutSession = async (
       'Only approved properties can be purchased'
     );
   }
+
+  // Removed owner block to support public investing in any approved property.
+  // if (property.authorId !== userId) {
+  //   throw new AppError(
+  //     status.FORBIDDEN,
+  //     'You cannot invest in someone else\'s property'
+  //   );
+  // }
+
   const requiresPayment =
     Boolean(property.isPaid) || Number(property.pricePerShare) > 0;
   if (!requiresPayment) {
