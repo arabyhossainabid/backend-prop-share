@@ -92,6 +92,11 @@ const deleteMessage = async (contactId: string) => {
   }
 };
 
+const deleteMyMessage = async (contactId: string, user: IRequestUser) => {
+  await ensureThreadAccess(contactId, user);
+  return await deleteMessage(contactId);
+};
+
 const getMyMessages = async (userId: string) => {
   return await prisma.contact.findMany({
     where: {
@@ -165,6 +170,7 @@ export const ContactService = {
   createMessage,
   getAllMessages,
   deleteMessage,
+  deleteMyMessage,
   getMyMessages,
   getReplies,
 };

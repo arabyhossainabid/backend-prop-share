@@ -37,6 +37,18 @@ const deleteMessage = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteMyMessage = catchAsync(async (req: Request, res: Response) => {
+  const user = req.verifiedUser!;
+  const result = await ContactService.deleteMyMessage(req.params.id as string, user);
+
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: 'Your message thread has been deleted',
+    data: result,
+  });
+});
+
 const getMyMessages = catchAsync(async (req: Request, res: Response) => {
   const user = req.verifiedUser!;
   const result = await ContactService.getMyMessages(user.userId);
@@ -68,6 +80,7 @@ export const ContactController = {
   submitMessage,
   getAllMessages,
   deleteMessage,
+  deleteMyMessage,
   getMyMessages,
   getReplies,
 };
